@@ -6,56 +6,52 @@
     <title>Best Thing About 2025 ✨</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            background: radial-gradient(circle, #1a0033, #000);
+            background: radial-gradient(circle, #2b001e, #000);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Arial', sans-serif;
             color: white;
             overflow: hidden;
             text-align: center;
         }
 
-        /* Rose & Star Container */
-        #animation-layer {
+        /* Rose falling animation */
+        #rose-layer {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
             z-index: 1;
         }
-
         .rose {
             position: absolute;
-            color: #ff4d6d;
-            font-size: 24px;
+            font-size: 25px;
             animation: fall linear infinite;
         }
-
         @keyframes fall {
             0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
-        /* Card Container */
+        /* Front Card Design */
         #cardBox {
             z-index: 10;
             background: rgba(255, 255, 255, 0.1);
-            padding: 40px 25px;
-            border-radius: 25px;
-            border: 4px solid #ffd700;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
+            padding: 40px 30px;
+            border-radius: 30px;
+            border: 4px dashed #ffd700;
+            backdrop-filter: blur(10px);
             width: 320px;
+            box-shadow: 0 0 40px rgba(255, 77, 109, 0.4);
         }
 
         .card-title {
-            font-size: 30px;
+            font-size: 28px;
             color: #ffd700;
-            text-shadow: 0 0 10px #ff0000;
             margin-bottom: 40px;
+            text-shadow: 2px 2px 10px #ff0055;
         }
 
         #openBtn {
@@ -67,8 +63,7 @@
             color: #000;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.6);
-            transition: 0.3s;
+            box-shadow: 0 5px 25px #ffd700;
         }
 
         /* Result Section */
@@ -77,50 +72,102 @@
             flex-direction: column;
             align-items: center;
             z-index: 10;
-            animation: popUp 1s ease;
+            animation: zoomIn 0.8s ease;
         }
 
         .ofcourse-text {
-            font-size: 42px;
+            font-size: 40px;
             font-weight: 900;
-            background: linear-gradient(to right, #ff4e50, #f9d423, #00ff87, #40e0d0, #ff00ff);
+            background: linear-gradient(to right, #ff3d3d, #fff700, #00ff6a, #00f2ff, #ff00e6);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            text-transform: uppercase;
+            margin-bottom: 15px;
         }
 
-        #video-container {
-            width: 200px;
-            height: 200px;
+        #video-frame {
+            width: 210px;
+            height: 210px;
             border-radius: 50%;
-            border: 6px solid #ffd700;
+            border: 8px solid #fff;
             overflow: hidden;
-            box-shadow: 0 0 40px #ff4d6d;
-            margin-bottom: 25px;
+            box-shadow: 0 0 30px #ff4d6d;
+            margin-bottom: 20px;
         }
 
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-        .message {
-            font-size: 18px;
+        .final-msg {
+            font-size: 17px;
             line-height: 1.6;
-            color: #ffffff;
+            color: #ffdeeb;
             font-style: italic;
-            background: rgba(0,0,0,0.5);
-            padding: 15px;
-            border-radius: 15px;
             max-width: 340px;
+            padding: 15px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px;
         }
 
-        @keyframes popUp {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
+        @keyframes zoomIn { from { transform: scale(0); } to { transform: scale(1); } }
     </style>
 </head>
 <body>
 
-    <div id="animation-layer"></div>
+    <div id="rose-layer"></div>
 
-    
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="mainContainer">
+        <div id="cardBox">
+            <h1 class="card-title">Best thing about 2025... 🌹✨</h1>
+            <button id="openBtn" onclick="openSurprise()">OPEN</button>
+        </div>
+
+        <div id="revealSection">
+            <h1 class="ofcourse-text">Of course YOU!</h1>
+            <div id="video-frame">
+                <video id="webcam" autoplay playsinline></video>
+            </div>
+            <p class="final-msg">
+                "You are the most special gift 2025 has given me this year. And thank you for coming into my life and always being there for me and supporting me."
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Rose rain function
+        function rain() {
+            const layer = document.getElementById('rose-layer');
+            const rose = document.createElement('div');
+            const items = ['🌹', '🌸', '❤️', '🎈'];
+            rose.className = 'rose';
+            rose.innerHTML = items[Math.floor(Math.random() * items.length)];
+            rose.style.left = Math.random() * 100 + 'vw';
+            rose.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            layer.appendChild(rose);
+            setTimeout(() => rose.remove(), 5000);
+        }
+        setInterval(rain, 400);
+
+        async function openSurprise() {
+            const music = document.getElementById('bgMusic');
+            const video = document.getElementById('webcam');
+            
+            // Music aur Camera start
+            music.play();
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                document.getElementById('cardBox').style.display = 'none';
+                document.getElementById('revealSection').style.display = 'flex';
+                setInterval(rain, 150); // Rain tez ho jayegi
+            } catch (err) {
+                alert("Please Allow Camera to see the surprise! ❤️");
+                document.getElementById('cardBox').style.display = 'none';
+                document.getElementById('revealSection').style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>
