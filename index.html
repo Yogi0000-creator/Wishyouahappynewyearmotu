@@ -21,84 +21,38 @@
             position: relative;
         }
 
-        /* Flowers Rain */
-        .flower {
-            position: absolute;
-            top: -50px;
-            font-size: 20px;
-            z-index: 100;
-            pointer-events: none;
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            to { transform: translateY(110vh) rotate(360deg); }
-        }
+        /* Flower Rain */
+        .flower { position: absolute; top: -50px; font-size: 20px; z-index: 100; pointer-events: none; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
         /* Steps */
-        .step { 
-            display: none; 
-            width: 90%; 
-            max-width: 400px; 
-            animation: fadeIn 0.8s ease; 
-            z-index: 10;
-            flex-direction: column;
-            align-items: center;
-        }
+        .step { display: none; width: 90%; max-width: 400px; animation: fadeIn 0.8s ease; z-index: 10; flex-direction: column; align-items: center; }
         .active { display: flex !important; }
-
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        /* Gift Box Step 1 */
-        .gift-box { 
-            font-size: 120px; cursor: pointer; animation: shake 1.5s infinite; 
-            display: inline-block; user-select: none; -webkit-tap-highlight-color: transparent;
-        }
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg); }
-            20% { transform: rotate(-10deg); }
-            40% { transform: rotate(10deg); }
-            60% { transform: rotate(-10deg); }
-            80% { transform: rotate(10deg); }
-        }
+        /* Gift Box */
+        .gift-box { font-size: 120px; cursor: pointer; animation: shake 1.5s infinite; display: inline-block; }
+        @keyframes shake { 0%, 100% { transform: rotate(0deg); } 20% { transform: rotate(-10deg); } 40% { transform: rotate(10deg); } 60% { transform: rotate(-10deg); } 80% { transform: rotate(10deg); } }
 
-        .title-gold { font-size: 28px; color: #ffd700; text-shadow: 0 0 10px #ff4d6d; margin-bottom: 20px; }
-
-        /* Camera Frame */
-        #video-frame { 
-            width: 200px; height: 200px; border-radius: 50%; border: 6px solid #fff; 
-            overflow: hidden; margin: 20px 0; box-shadow: 0 0 25px #ff4d6d; background: #000; 
-        }
+        /* Video Frame */
+        #video-frame { width: 200px; height: 200px; border-radius: 50%; border: 6px solid #fff; overflow: hidden; margin: 20px 0; box-shadow: 0 0 25px #ff4d6d; background: #000; }
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-        /* Rose Heartbeat */
-        .rose-display { font-size: 100px; animation: heartBeat 1.5s infinite; margin-bottom: 10px; }
-        @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        /* Message Box with Typing Animation */
+        .message-box { font-style: italic; font-size: 16px; line-height: 1.6; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); min-height: 100px; }
 
-        .message-box { 
-            font-style: italic; font-size: 16px; line-height: 1.6; background: rgba(255,255,255,0.1); 
-            padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); 
-        }
+        .btn-next { margin-top: 25px; padding: 15px 45px; font-size: 18px; border: none; border-radius: 50px; background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; font-weight: bold; cursor: pointer; }
 
-        .btn-next {
-            margin-top: 25px; padding: 15px 45px; font-size: 18px; border: none; border-radius: 50px;
-            background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; font-weight: bold; cursor: pointer;
-        }
+        /* Countdown Style */
+        #countdown { font-size: 20px; color: #ffd700; margin-bottom: 15px; font-weight: bold; }
+        .year-2026 { font-size: 70px; font-weight: 900; background: linear-gradient(to bottom, #fff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* Sky Shot / Fireworks Animation */
-        .firework {
-            position: absolute; width: 5px; height: 5px; border-radius: 50%;
-            animation: explode 2s ease-out infinite;
-        }
-        @keyframes explode {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(30); opacity: 0; box-shadow: 0 0 20px 5px white; }
-        }
-
-        .ny-text { font-family: 'Dancing Script', cursive; font-size: 40px; color: #ffd700; text-shadow: 0 0 20px #ff0000; }
-        .year-2026 { font-size: 80px; font-weight: 900; background: linear-gradient(to bottom, #fff, #ffd700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* Click Sparkle */
+        .sparkle { position: absolute; pointer-events: none; animation: spark 1s forwards; font-size: 20px; }
+        @keyframes spark { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(2) translateY(-50px); opacity: 0; } }
     </style>
 </head>
-<body onclick="playMusic()">
+<body onclick="handleGlobalClick(event)">
 
     <audio id="bgMusic" loop preload="auto">
         <source src="https://docs.google.com/uc?export=download&id=1kDKQbCLJkJOX4kyh0ZOFiSEu6_Pj3aH1" type="audio/mpeg">
@@ -106,89 +60,105 @@
 
     <div id="step1" class="step active">
         <div class="gift-box" onclick="goToStep2(event)">🎁</div>
-        <p style="margin-top: 20px; font-weight: bold;">Tap on Gift Box to Open!</p>
+        <p style="margin-top: 20px;">Tumhare liye kuch hai... Khola kya? ❤️</p>
     </div>
 
     <div id="step2" class="step">
-        <h1 class="title-gold">Best thing about 2025... ✨🌹</h1>
+        <h1 style="color:#ffd700">Best thing about 2025... ✨🌹</h1>
         <button class="btn-next" onclick="openCamera()">OPEN</button>
     </div>
 
     <div id="step3" class="step">
-        <h1 class="title-gold" style="color: #00ff6a;">Of course YOU!</h1>
-        <div id="video-frame">
-            <video id="webcam" autoplay playsinline></video>
-        </div>
-        <div class="message-box">Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .</div>
+        <h1 style="color:#00ff6a">Of course YOU!</h1>
+        <div id="video-frame"><video id="webcam" autoplay playsinline></video></div>
+        <div class="message-box" id="typewriter1"></div>
         <button class="btn-next" onclick="nextStep(4)">Next ❤️</button>
     </div>
 
     <div id="step4" class="step">
-        <div class="rose-display">🌹</div>
-        <p style="font-family:'Dancing Script'; font-size:32px; color:#ff4d6d;">For You.. 🌹</p>
-        <div class="message-box">Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️</div>
+        <div style="font-size:100px; animation: heartBeat 1.5s infinite;">🌹</div>
+        <h2 style="font-family:'Dancing Script'; color:#ff4d6d">For You..</h2>
+        <div class="message-box" id="typewriter2"></div>
         <button class="btn-next" onclick="nextStep(5)">One more thing...</button>
     </div>
 
     <div id="step5" class="step">
-        <div class="message-box" style="text-align: justify;">
-            Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. You have made my whole life beautiful. I always want to be with you. I always want you to be with me.
-        </div>
-        <button class="btn-next" onclick="nextStep(6)">Click for Surprise! 🎆</button>
+        <div class="message-box" id="typewriter3" style="text-align: justify;"></div>
+        <button class="btn-next" onclick="nextStep(6)">Ready for 2026? 🎇</button>
     </div>
 
     <div id="step6" class="step">
-        <h2 class="ny-text">Wishing you a very</h2>
-        <h1 class="ny-text" style="font-size: 50px;">Happy New Year</h1>
+        <div id="countdown">Loading Countdown...</div>
+        <h1 style="font-family:'Dancing Script'; font-size:40px; color:#ffd700">Happy New Year</h1>
         <div class="year-2026">2026</div>
-        <p style="margin-top:20px; color:#ffd700;">May this year be as bright as you! ✨</p>
+        <p style="margin-top:20px;">May our bond grow stronger! 🥂❤️</p>
     </div>
 
     <script>
         const music = document.getElementById('bgMusic');
+        
+        // Typing Effect Logic
+        function typeWriter(text, elementId, speed = 50) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            element.innerHTML = "";
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
 
-        function playMusic() { music.play().catch(() => {}); }
+        // Countdown Logic
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const nextYear = new Date("Jan 1, 2026 00:00:00").getTime();
+            const diff = nextYear - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${mins}m to go...`;
+        }
+        setInterval(updateCountdown, 1000);
+
+        function handleGlobalClick(e) {
+            // Sparkle effect
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.innerHTML = '❤️';
+            sparkle.style.left = e.pageX + 'px';
+            sparkle.style.top = e.pageY + 'px';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 1000);
+            music.play().catch(() => {});
+        }
 
         function createFlower() {
             const flower = document.createElement('div');
-            const types = ['🌹', '🌸', '❤️', '✨'];
             flower.className = 'flower';
-            flower.innerHTML = types[Math.floor(Math.random() * types.length)];
+            flower.innerHTML = ['🌹', '❤️', '✨'][Math.floor(Math.random()*3)];
             flower.style.left = Math.random() * 100 + 'vw';
-            flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            flower.style.animationDuration = (Math.random()*3+2)+'s';
             document.body.appendChild(flower);
-            setTimeout(() => { flower.remove(); }, 5000);
+            setTimeout(() => flower.remove(), 5000);
         }
         setInterval(createFlower, 400);
-
-        // Fireworks logic for Step 6
-        function createFirework() {
-            if(document.getElementById('step6').classList.contains('active')) {
-                const fw = document.createElement('div');
-                fw.className = 'firework';
-                fw.style.left = Math.random() * 100 + 'vw';
-                fw.style.top = Math.random() * 100 + 'vh';
-                fw.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                document.body.appendChild(fw);
-                setTimeout(() => fw.remove(), 2000);
-            }
-        }
-        setInterval(createFirework, 300);
 
         function nextStep(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + n).classList.add('active');
-            playMusic(); 
+            
+            if(n === 3) typeWriter("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "typewriter1");
+            if(n === 4) typeWriter("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "typewriter2");
+            if(n === 5) typeWriter("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "typewriter3");
         }
 
-        function goToStep2(e) {
-            e.stopPropagation();
-            playMusic();
-            nextStep(2);
-        }
+        function goToStep2(e) { e.stopPropagation(); music.play(); nextStep(2); }
 
         async function openCamera() {
-            playMusic();
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 document.getElementById('webcam').srcObject = stream;
