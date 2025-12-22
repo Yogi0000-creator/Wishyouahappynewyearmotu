@@ -91,7 +91,7 @@
 <body onclick="playMusic()">
 
     <audio id="bgMusic" loop preload="auto">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="https://docs.google.com/uc?export=download&id=1kDKQbCLJkJOX4kyh0ZOFiSEu6_Pj3aH1" type="audio/mpeg">
     </audio>
 
     <div id="step1" class="step active">
@@ -131,8 +131,7 @@
         const music = document.getElementById('bgMusic');
 
         function playMusic() {
-            // Force play and ensure it keeps looping
-            music.play().catch(() => {});
+            music.play().catch((e) => { console.log("Playback error", e) });
         }
 
         function createFlower() {
@@ -150,7 +149,7 @@
         function nextStep(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + n).classList.add('active');
-            playMusic(); // Ensure music is still playing on next step
+            playMusic(); 
         }
 
         function goToStep2(e) {
