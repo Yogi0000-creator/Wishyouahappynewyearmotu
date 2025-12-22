@@ -21,79 +21,160 @@
             position: relative;
         }
 
-        /* Flower Rain Style */
+        /* Flowers Rain (Everlasting) */
         .flower {
             position: absolute;
             top: -50px;
             font-size: 20px;
             z-index: 100;
-            user-select: none;
             pointer-events: none;
             animation: fall linear infinite;
         }
-
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
         }
 
-        .step { display: none; width: 90%; max-width: 400px; animation: fadeIn 0.8s ease; z-index: 10; }
-        .active { display: flex; flex-direction: column; align-items: center; }
+        /* Steps Management */
+        .step { 
+            display: none; 
+            width: 90%; 
+            max-width: 400px; 
+            animation: fadeIn 0.8s ease; 
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+        }
+        .active { display: flex !important; }
 
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        /* Gift Box */
-        .gift-box { font-size: 100px; cursor: pointer; animation: bounce 2s infinite; }
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        /* Step 1: Big Gift Box */
+        .gift-box { 
+            font-size: 120px; 
+            cursor: pointer; 
+            animation: shake 1.5s infinite; 
+            display: inline-block;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(-10deg); }
+            40% { transform: rotate(10deg); }
+            60% { transform: rotate(-10deg); }
+            80% { transform: rotate(10deg); }
+        }
 
         .title-gold { font-size: 28px; color: #ffd700; text-shadow: 0 0 10px #ff4d6d; margin-bottom: 20px; }
 
-        /* Camera Frame */
-        #video-frame { width: 220px; height: 220px; border-radius: 50%; border: 6px solid #fff; overflow: hidden; margin: 20px 0; box-shadow: 0 0 25px #ff4d6d; background: #000; }
+        /* Camera Section */
+        #video-frame { 
+            width: 200px; height: 200px; border-radius: 50%; border: 6px solid #fff; 
+            overflow: hidden; margin: 20px 0; box-shadow: 0 0 25px #ff4d6d; background: #000; 
+        }
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-        /* Final Rose Animation */
-        .rose-display { font-size: 120px; filter: drop-shadow(0 0 20px #ff4d6d); animation: heartBeat 1.5s infinite; margin-bottom: 10px; }
-        @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        /* Final Rose */
+        .rose-display { font-size: 100px; animation: heartBeat 1.5s infinite; margin-bottom: 10px; }
+        @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
-        .message-box { font-style: italic; font-size: 16px; line-height: 1.6; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); }
-
-        button {
-            margin-top: 25px; padding: 15px 45px; font-size: 18px; border: none; border-radius: 50px;
-            background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; font-weight: bold; cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255,215,0,0.5);
+        .message-box { 
+            font-style: italic; font-size: 16px; line-height: 1.6; background: rgba(255,255,255,0.1); 
+            padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); 
         }
 
-        .rose-text { font-family: 'Dancing Script', cursive; font-size: 32px; color: #ff4d6d; margin-bottom: 10px; }
+        .btn-next {
+            margin-top: 25px; padding: 15px 45px; font-size: 18px; border: none; border-radius: 50px;
+            background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; font-weight: bold; cursor: pointer;
+        }
+
+        .rose-text { font-family: 'Dancing Script', cursive; font-size: 32px; color: #ff4d6d; }
     </style>
 </head>
-<body>
+<body onclick="playMusicOnce()">
 
     <audio id="bgMusic" loop>
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
     <div id="step1" class="step active">
-        <div class="gift-box" onclick="startApp()">🎁</div>
-        <p style="margin-top: 20px;">Aapke liye ek gift hai... Tap karein!</p>
+        <div class="gift-box" onclick="goToStep2(event)">🎁</div>
+        <p style="margin-top: 20px; font-weight: bold;">Tap on Gift Box to Open!</p>
     </div>
 
     <div id="step2" class="step">
         <h1 class="title-gold">Best thing about 2025... ✨🌹</h1>
-        <button onclick="openCamera()">OPEN</button>
+        <button class="btn-next" onclick="openCamera()">OPEN</button>
     </div>
 
     <div id="step3" class="step">
-        <h1 class="title-gold" style="background: linear-gradient(to right, #ff3d3d, #fff700, #00ff6a); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Of course YOU!</h1>
+        <h1 class="title-gold" style="color: #00ff6a;">Of course YOU!</h1>
         <div id="video-frame">
             <video id="webcam" autoplay playsinline></video>
         </div>
         <div class="message-box">Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .</div>
-        <button onclick="nextStep(4)">Next ❤️</button>
+        <button class="btn-next" onclick="nextStep(4)">Next ❤️</button>
     </div>
 
     <div id="step4" class="step">
         <div class="rose-display">🌹</div>
         <p class="rose-text">For You.. 🌹</p>
-        <div class="message-box">
-            Love you so much motu. Love you khdusain. Love you love you beta ji love you sooooo
-            
+        <div class="message-box">Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️</div>
+        <button class="btn-next" onclick="nextStep(5)">One more thing...</button>
+    </div>
+
+    <div id="step5" class="step">
+        <div class="message-box" style="text-align: justify;">
+            Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. You have made my whole life beautiful. I always want to be with you. I always want you to be with me.
+        </div>
+        <h2 style="margin-top: 30px; color: #ffd700; font-family: 'Dancing Script'; font-size: 35px;">Forever Yours ❤️</h2>
+    </div>
+
+    <script>
+        let musicStarted = false;
+
+        function playMusicOnce() {
+            if (!musicStarted) {
+                const music = document.getElementById('bgMusic');
+                music.play().catch(() => {});
+                musicStarted = true;
+            }
+        }
+
+        function createFlower() {
+            const flower = document.createElement('div');
+            const types = ['🌹', '🌸', '❤️', '✨'];
+            flower.className = 'flower';
+            flower.innerHTML = types[Math.floor(Math.random() * types.length)];
+            flower.style.left = Math.random() * 100 + 'vw';
+            flower.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(flower);
+            setTimeout(() => { flower.remove(); }, 5000);
+        }
+        setInterval(createFlower, 400);
+
+        function nextStep(n) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + n).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function goToStep2(e) {
+            e.stopPropagation(); // Click conflict rokne ke liye
+            playMusicOnce();
+            nextStep(2);
+        }
+
+        async function openCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                document.getElementById('webcam').srcObject = stream;
+                nextStep(3);
+            } catch (err) {
+                alert("Camera allow karein tabhi surprise dikhega! ❤️");
+                nextStep(3);
+            }
+        }
+    </script>
+</body>
+</html>
