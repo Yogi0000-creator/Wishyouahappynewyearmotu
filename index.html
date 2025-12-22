@@ -2,73 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our 2025 Journey ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Journey ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; position: relative; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: radial-gradient(circle, #2b001e, #000); 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-family: 'Poppins', sans-serif; 
+            color: white; 
+            overflow: hidden; 
+            text-align: center; 
+            position: relative; 
+        }
 
-        /* Flower Rain Animation */
-        .flower { position: absolute; top: -50px; font-size: 20px; z-index: 100; pointer-events: none; animation: fall linear infinite; }
+        /* Flower Rain */
+        .flower { position: absolute; top: -50px; font-size: 20px; z-index: 1; pointer-events: none; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
-        /* Navigation Steps */
-        .step { display: none; width: 90%; max-width: 420px; animation: fadeIn 1s ease; z-index: 10; flex-direction: column; align-items: center; }
+        /* Steps Management */
+        .step { 
+            display: none; 
+            width: 90%; 
+            max-width: 420px; 
+            z-index: 100; /* Buttons are now on top of everything */
+            flex-direction: column;
+            align-items: center;
+        }
         .active { display: flex !important; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
         /* Typography */
-        .year-title { font-size: 80px; font-weight: 900; background: linear-gradient(to bottom, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px; }
-        .special-msg { font-size: 18px; line-height: 1.6; color: #ffdeeb; margin-bottom: 20px; font-style: italic; }
-        .date-text { font-size: 22px; color: #ffd700; font-weight: bold; letter-spacing: 2px; }
-        .memory-text { font-family: 'Dancing Script', cursive; font-size: 28px; color: #ff4d6d; margin-top: 10px; }
+        .year-title { font-size: 70px; font-weight: 900; background: linear-gradient(to bottom, #ffd700, #ff8c00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
+        .special-msg { font-size: 16px; line-height: 1.5; color: #ffdeeb; margin-bottom: 30px; font-style: italic; }
+        
+        /* Buttons Fix */
+        .btn-next { 
+            display: block;
+            width: 220px;
+            padding: 18px 0; 
+            font-size: 18px; 
+            border: none; 
+            border-radius: 50px; 
+            background: linear-gradient(45deg, #ffd700, #ff8c00); 
+            color: #000; 
+            font-weight: bold; 
+            cursor: pointer; 
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+            position: relative;
+            z-index: 9999; /* Highest priority */
+        }
 
-        /* Interactive Elements */
-        .gift-box { font-size: 110px; cursor: pointer; animation: shake 1.5s infinite; -webkit-tap-highlight-color: transparent; }
-        @keyframes shake { 0%, 100% { transform: rotate(0deg); } 20% { transform: rotate(-8deg); } 40% { transform: rotate(8deg); } 60% { transform: rotate(-8deg); } 80% { transform: rotate(8deg); } }
-
-        #video-frame { width: 210px; height: 210px; border-radius: 50%; border: 6px solid #fff; overflow: hidden; margin: 20px 0; box-shadow: 0 0 30px #ff4d6d; background: #000; }
-        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-
-        .message-box { font-style: italic; font-size: 16px; line-height: 1.6; background: rgba(255,255,255,0.1); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); min-height: 90px; }
-        .btn-next { margin-top: 25px; padding: 15px 45px; font-size: 18px; border: none; border-radius: 50px; background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-next:active { transform: scale(0.9); }
-
-        .sparkle { position: absolute; pointer-events: none; animation: spark 1s forwards; font-size: 22px; z-index: 999; }
-        @keyframes spark { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(2) translateY(-60px); opacity: 0; } }
-    </style>
-</head>
-<body onclick="playMusicOnce()">
-
-    <audio id="bgMusic" loop preload="auto">
-        <source src="https://docs.google.com/uc?export=download&id=1kDKQbCLJkJOX4kyh0ZOFiSEu6_Pj3aH1" type="audio/mpeg">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="step1" class="step active">
-        <h1 class="year-title">2025</h1>
-        <p class="special-msg">"This year has been the most special year of my life because I found you in 2025. And I want you to always be with me and spend the rest of my life with you."</p>
-        <button class="btn-next" onclick="nextStep(2)">Start Our Journey ✨</button>
-    </div>
-
-    <div id="step2" class="step">
-        <p class="date-text">07 October 2025</p>
-        <p class="memory-text">"The first meeting made me unexpectedly happy"</p>
-        <button class="btn-next" onclick="nextStep(3)">Next ❤️</button>
-    </div>
-
-    <div id="step3" class="step">
-        <div class="gift-box" onclick="nextStep(4)">🎁</div>
-        <p style="margin-top: 20px;">Open your gift... ❤️</p>
-    </div>
-
-    <div id="step4" class="step">
-        <h1 style="color:#ffd700">Best thing about 2025... ✨🌹</h1>
-        <button class="btn-next" onclick="openCamera()">OPEN</button>
-    </div>
-
-    <div id="step5" class="step">
-        <h1 style="color:#00ff6a">Of course YOU!</h1>
-        <div id
-            
+        #video-frame { width: 210px; height: 210px; border-radius: 50%; border: 6px solid #fff; overflow: hidden; margin:
+        
