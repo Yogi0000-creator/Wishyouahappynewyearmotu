@@ -98,7 +98,18 @@
     <div id="step9" class="step">
         <div class="type-box" id="t3" style="text-align: justify;"></div>
         <h1 class="cursive-font" style="font-size: 40px; margin-top: 20px; color: #ff4d6d;">Happy New Year 2026</h1>
-        <p style="color: #ffd700; font-weight: bold; margin-top: 10px;">Forever with you... ❤️</p>
+        <button class="btn-style" onclick="go(10)">One More Thing... ✨</button>
+    </div>
+
+    <div id="step10" class="step">
+        <div class="type-box cursive-font" id="t-mila"></div>
+        <button class="btn-style" onclick="go(11)">Last Message ❤️</button>
+    </div>
+
+    <div id="step11" class="step">
+        <div style="font-size: 100px; margin-bottom: 20px;">💑</div>
+        <div class="type-box cursive-font" id="t-final"></div>
+        <p style="color: #ffd700; font-weight: bold; margin-top: 20px; letter-spacing: 2px;">FOREVER & ALWAYS</p>
     </div>
 
     <script>
@@ -130,13 +141,17 @@
             document.getElementById('step' + n).classList.add('active');
             playMusic();
             
-            // Typing Logic
             if(n === 3) type("Naya saal toh har saal aata hai, par meri khushi tumse shuru hokar tum par hi khatam hoti hai. Dua hai ki ye saal humari mohabbat ko aur gehra kare. Happy New Year, my love!", "t-ny", 50);
             if(n === 4) type("Is naye saal mein bas ek hi tamanna hai, ki tumhari muskurahat kabhi kam na ho aur mera haath hamesha tumhare haath mein rahe.", "t-tamanna", 50);
-            
             if(n === 7) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1", 45);
             if(n === 8) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2", 45);
             if(n === 9) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3", 45);
+            
+            // New Page 10 Typing
+            if(n === 10) type("Tum mile toh sab mila, naye saal se ab aur kya maangu?", "t-mila", 55);
+            
+            // Final Page 11 Typing
+            if(n === 11) type("Naya saal, naye sapne, aur wahi mera purana wala saccha pyaar. I love you!", "t-final", 60);
         }
 
         function type(txt, id, speed) {
