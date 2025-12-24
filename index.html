@@ -7,16 +7,20 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; }
+        body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; transition: background 2s ease; }
 
-        /* Scratch Card Styling */
+        /* Scratch Card */
         #scratch-container { position: relative; width: 280px; height: 150px; background: #fff; border-radius: 15px; overflow: hidden; margin: 20px auto; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
         #scratch-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; z-index: 2; touch-action: none; }
-        .scratch-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: #ff4d6d; color: white; font-family: 'Dancing Script'; font-size: 20px; padding: 20px; z-index: 1; line-height: 1.4; }
+        .scratch-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: #ff4d6d; color: white; font-family: 'Dancing Script'; font-size: 20px; padding: 20px; z-index: 1; }
 
         /* Floating Hearts on Tap */
         .tap-heart { position: absolute; pointer-events: none; animation: flyUp 1s linear forwards; font-size: 24px; z-index: 100000; }
         @keyframes flyUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-120px) scale(1.5); opacity: 0; } }
+
+        /* Love Meter */
+        #meter-container { width: 100%; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; display: none; overflow: hidden; }
+        #meter-fill { width: 0%; height: 100%; background: linear-gradient(to right, #ff4d6d, #ffd700); transition: width 2s ease-in-out; }
 
         /* General Styles */
         #balloon-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a0011; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; }
@@ -56,25 +60,13 @@
 
     <div id="step1" class="step">
         <h1 style="font-size: 60px; color: #ffd700;">2025</h1>
-        <p style="font-size: 16px; line-height: 1.6; color: #ffe0ed;">"This year has been the most special year of my life because I found you in 2025..."</p>
+        <p>"This year has been the most special year because of you..."</p>
         <button class="btn-style" onclick="go(2)">Next ✨</button>
     </div>
 
-    <div id="step2" class="step">
-        <p style="font-size: 24px; color: #ffd700; font-weight: bold;">07 October 2025</p>
-        <p class="cursive-font">"The first meeting made me unexpectedly happy"</p>
-        <button class="btn-style" onclick="go(3)">Next ❤️</button>
-    </div>
-
-    <div id="step3" class="step">
-        <div class="type-box cursive-font" id="t-ny"></div>
-        <button class="btn-style" onclick="go(4)">More... ✨</button>
-    </div>
-
-    <div id="step4" class="step">
-        <div class="type-box cursive-font" id="t-tamanna"></div>
-        <button class="btn-style" onclick="go(5)">Next ❤️</button>
-    </div>
+    <div id="step2" class="step"><p class="cursive-font">07 October 2025<br>The first meeting...</p><button class="btn-style" onclick="go(3)">Next</button></div>
+    <div id="step3" class="step"><div class="type-box cursive-font" id="t-ny"></div><button class="btn-style" onclick="go(4)">More</button></div>
+    <div id="step4" class="step"><div class="type-box cursive-font" id="t-tamanna"></div><button class="btn-style" onclick="go(5)">Next</button></div>
 
     <div id="step5" class="step">
         <p class="cursive-font">Scratch this to see my Promise... 🤫</p>
@@ -85,80 +77,69 @@
         <button class="btn-style" onclick="go(6)">Open Gift 🎁</button>
     </div>
 
-    <div id="step6" class="step">
-        <div style="font-size: 90px; cursor: pointer;" onclick="go(7)">🎁</div>
-        <p>A gift for you...</p>
-        <button class="btn-style" onclick="go(7)">Open Gift 🎁</button>
-    </div>
-
-    <div id="step7" class="step">
-        <h1 style="color: #ffd700;">Best thing about 2025... ✨</h1>
-        <button class="btn-style" onclick="openCam()">See Reality 🤳</button>
-    </div>
-
-    <div id="step8" class="step">
-        <h1 style="color: #00ff6a;">Of course YOU!</h1>
-        <div id="cam-box"><video id="video" autoplay playsinline></video></div>
-        <div class="type-box" id="t1"></div>
-        <button class="btn-style" onclick="go(9)">Next ❤️</button>
-    </div>
-
-    <div id="step9" class="step">
-        <div style="font-size: 70px;">🌹</div>
-        <h2 class="cursive-font">For You..</h2>
-        <div class="type-box" id="t2"></div>
-        <button class="btn-style" onclick="go(10)">Final Message ❤️</button>
-    </div>
-
-    <div id="step10" class="step">
-        <div class="type-box" id="t3" style="text-align: justify;"></div>
-        <h1 class="cursive-font" style="font-size: 35px; margin-top: 15px; color: #ff4d6d;">Happy New Year 2026</h1>
-        <button class="btn-style" onclick="go(11)">One More Thing... ✨</button>
-    </div>
-
-    <div id="step11" class="step">
-        <div class="type-box cursive-font" id="t-mila"></div>
-        <button class="btn-style" onclick="go(12)">Last Message ❤️</button>
-    </div>
+    <div id="step6" class="step"><div style="font-size: 80px;">🎁</div><button class="btn-style" onclick="go(7)">Open</button></div>
+    <div id="step7" class="step"><h1 style="color:#ffd700;">Best thing about 2025...</h1><button class="btn-style" onclick="openCam()">See Reality</button></div>
+    <div id="step8" class="step"><h1>Of course YOU!</h1><div id="cam-box"><video id="video" autoplay playsinline></video></div><div class="type-box" id="t1"></div><button class="btn-style" onclick="go(9)">Next</button></div>
+    <div id="step9" class="step"><div style="font-size: 70px;">🌹</div><div class="type-box" id="t2"></div><button class="btn-style" onclick="go(10)">Final</button></div>
+    <div id="step10" class="step"><div class="type-box" id="t3"></div><h1 class="cursive-font">Happy New Year 2026</h1><button class="btn-style" onclick="go(11)">One More ✨</button></div>
+    <div id="step11" class="step"><div class="type-box cursive-font" id="t-mila"></div><button class="btn-style" onclick="go(12)">Last Thing ❤️</button></div>
 
     <div id="step12" class="step">
-        <div style="font-size: 90px; margin-bottom: 10px;">💑</div>
-        <div class="type-box cursive-font" id="t-final"></div>
-        <p style="color: #ffd700; font-weight: bold; margin-top: 20px; letter-spacing: 2px;">FOREVER & ALWAYS</p>
+        <p class="cursive-font">How much I love you?</p>
+        <div id="meter-container"><div id="meter-fill"></div></div>
+        <p id="percent" style="font-weight:bold; color:#ffd700;">0%</p>
+        <div class="type-box cursive-font" id="t-final" style="margin-top:15px; display:none;"></div>
+        <button id="final-btn" class="btn-style" onclick="startLoveMeter()">Check Now 💖</button>
     </div>
 
     <script>
         let audio = document.getElementById('mySong');
         let musicStarted = false;
+        let flowerSpeed = 500;
 
         function createHeart(e) {
             const clientX = e.clientX || (e.touches && e.touches[0].clientX);
             const clientY = e.clientY || (e.touches && e.touches[0].clientY);
             if(!clientX) return;
             const heart = document.createElement('div');
-            heart.className = 'tap-heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = clientX + 'px';
-            heart.style.top = clientY + 'px';
+            heart.className = 'tap-heart'; heart.innerHTML = '❤️';
+            heart.style.left = clientX + 'px'; heart.style.top = clientY + 'px';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 1000);
+        }
+
+        function startLoveMeter() {
+            document.getElementById('final-btn').style.display = 'none';
+            document.getElementById('meter-container').style.display = 'block';
+            let fill = document.getElementById('meter-fill');
+            let perc = document.getElementById('percent');
+            let count = 0;
+            let interval = setInterval(() => {
+                count += 1;
+                fill.style.width = count + '%';
+                perc.innerHTML = count + '%';
+                if(count >= 100) {
+                    clearInterval(interval);
+                    perc.innerHTML = "Infinite ∞";
+                    document.getElementById('t-final').style.display = 'block';
+                    type("Naya saal, naye sapne, aur wahi mera purana wala saccha pyaar. I love you!", "t-final", 60);
+                    document.body.style.background = "radial-gradient(circle, #800000, #000)";
+                    flowerSpeed = 100; // Increase flower rain
+                }
+            }, 30);
         }
 
         function initScratch() {
             const canvas = document.getElementById('scratch-canvas');
             const ctx = canvas.getContext('2d');
-            ctx.fillStyle = '#C0C0C0'; 
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#C0C0C0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.globalCompositeOperation = 'destination-out';
-            
             function scratch(e) {
                 e.preventDefault();
                 const rect = canvas.getBoundingClientRect();
                 const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
                 const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
-                ctx.beginPath();
-                ctx.arc(x, y, 25, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill();
             }
             canvas.addEventListener('mousemove', scratch);
             canvas.addEventListener('touchmove', scratch);
@@ -189,14 +170,12 @@
             document.getElementById('step' + n).classList.add('active');
             if(n === 5) initScratch();
             playMusic();
-            
             if(n === 3) type("Naya saal toh har saal aata hai, par meri khushi tumse shuru hokar tum par hi khatam hoti hai. Dua hai ki ye saal humari mohabbat ko aur gehra kare. Happy New Year, my love!", "t-ny", 50);
             if(n === 4) type("Is naye saal mein bas ek hi tamanna hai, ki tumhari muskurahat kabhi kam na ho aur mera haath hamesha tumhare haath mein rahe.", "t-tamanna", 50);
             if(n === 8) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1", 45);
             if(n === 9) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2", 45);
             if(n === 10) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3", 45);
             if(n === 11) type("Tum mile toh sab mila, naye saal se ab aur kya maangu?", "t-mila", 55);
-            if(n === 12) type("Naya saal, naye sapne, aur wahi mera purana wala saccha pyaar. I love you!", "t-final", 60);
         }
 
         function type(txt, id, speed) {
@@ -215,12 +194,12 @@
 
         setInterval(() => {
             let f = document.createElement('div'); f.className = 'flower';
-            f.innerHTML = ['🌹','❤️','✨'][Math.floor(Math.random()*3)];
+            f.innerHTML = ['🌹','❤️','✨','🌸'][Math.floor(Math.random()*4)];
             f.style.left = Math.random()*100 + 'vw';
             f.style.animationDuration = (Math.random()*3+2) + 's';
             document.body.appendChild(f);
             setTimeout(() => f.remove(), 5000);
-        }, 500);
+        }, 300); // Constant rain
     </script>
 </body>
 </html>
