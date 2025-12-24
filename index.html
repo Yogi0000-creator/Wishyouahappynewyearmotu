@@ -7,72 +7,41 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        
         body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; }
 
-        /* Balloon Container - Pure screen clickable area */
-        #balloon-container { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #1a0011; z-index: 99999; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            cursor: pointer; 
-        }
-        
-        /* Floating Animation */
-        .balloon-box { position: relative; width: 150px; height: 250px; display: flex; justify-content: center; }
-        
-        .balloon { 
-            width: 120px; height: 150px; background: #ff4d6d; 
-            border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%; 
-            position: relative; 
-            box-shadow: inset -10px -10px 15px rgba(0,0,0,0.3), 0 10px 30px rgba(255,77,109,0.5); 
-            animation: float 2s ease-in-out infinite;
-        }
-
+        /* Balloon Section */
+        #balloon-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a0011; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; }
+        .balloon { width: 120px; height: 150px; background: #ff4d6d; border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%; position: relative; box-shadow: inset -10px -10px 15px rgba(0,0,0,0.3), 0 10px 30px rgba(255,77,109,0.5); animation: float 2s ease-in-out infinite; }
         .balloon::before { content: "📍"; position: absolute; top: -20px; right: -5px; font-size: 35px; }
-        .balloon::after { content: ""; width: 2px; height: 100px; background: rgba(255,255,255,0.2); position: absolute; top: 150px; left: 50%; }
-
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-30px) rotate(2deg); } }
-        
-        /* Fast Pop Animation */
-        .pop-now { animation: popAnim 0.15s ease-out forwards !important; }
-        @keyframes popAnim { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } 100% { transform: scale(0); opacity: 0; } }
 
-        /* Password Screen Styling */
+        /* Password & Steps */
         #password-screen { display: none; flex-direction: column; align-items: center; z-index: 10000; }
-        .pass-input { 
-            padding: 15px; width: 280px; border-radius: 12px; border: 2px solid #ffd700; 
-            background: rgba(255,255,255,0.1); color: white; font-size: 18px; text-align: center; margin: 20px 0; 
-        }
-
-        /* Journey Steps */
+        .pass-input { padding: 15px; width: 280px; border-radius: 12px; border: 2px solid #ffd700; background: rgba(255,255,255,0.1); color: white; font-size: 18px; text-align: center; margin: 20px 0; }
         .step { display: none; width: 90%; max-width: 400px; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease-in; }
         .active { display: flex !important; }
-        .btn-style { background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; padding: 16px 45px; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 20px; }
         
+        /* Buttons & Extras */
+        .btn-style { background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; padding: 16px 45px; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 20px; }
+        .cursive-font { font-family: 'Dancing Script', cursive; font-size: 30px; color: #ff4d6d; line-height: 1.4; }
+        .type-box { background: rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; min-height: 70px; font-style: italic; }
         #cam-box { width: 210px; height: 210px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; margin: 20px 0; }
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-        .type-box { background: rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; min-height: 70px; font-style: italic; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         .flower { position: absolute; top: -50px; font-size: 20px; z-index: 1; pointer-events: none; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <div id="balloon-container" onmousedown="handlePop(event)" ontouchstart="handlePop(event)">
-        <h2 style="margin-bottom: 50px; color: #ffd700; font-family: 'Dancing Script'; font-size: 32px;">Pin the balloon to start! 🎈</h2>
-        <div class="balloon-box">
-            <div id="mainBalloon" class="balloon"></div>
-        </div>
-        <p style="margin-top: 40px; font-size: 14px; opacity: 0.6; letter-spacing: 1px;">TOUCH THE BALLOON</p>
+    <div id="balloon-container" onclick="handlePop()">
+        <h2 style="margin-bottom: 50px; color: #ffd700; font-family: 'Dancing Script'; font-size: 32px;">Pin the balloon! 🎈</h2>
+        <div class="balloon" id="mainBalloon"></div>
     </div>
 
     <div id="password-screen">
-        <h2 style="color: #ffd700; font-family: 'Dancing Script'; font-size: 32px;">Pahle jo bolte ho wo bolo</h2>
+        <h2 class="cursive-font" style="color: #ffd700;">Pahle jo bolte ho wo bolo</h2>
         <input type="text" id="passInput" class="pass-input" placeholder="Type here..." autocomplete="off">
-        <p id="error" style="color: #ff4d6d; font-size: 14px; display: none; margin-bottom: 10px;">Galat hai! ❤️</p>
         <button class="btn-style" onclick="checkPassword()">Unlock ✨</button>
     </div>
 
@@ -82,62 +51,68 @@
 
     <div id="step1" class="step">
         <h1 style="font-size: 70px; color: #ffd700;">2025</h1>
-        <p style="font-size: 17px; line-height: 1.7; color: #ffe0ed; margin-bottom: 30px;">"This year has been the most special year of my life because I found you in 2025. And I want you to always be with me."</p>
+        <p style="font-size: 16px; line-height: 1.6; color: #ffe0ed;">"This year has been the most special year of my life because I found you in 2025..."</p>
         <button class="btn-style" onclick="go(2)">Next ✨</button>
     </div>
 
     <div id="step2" class="step">
-        <p style="font-size: 26px; color: #ffd700; font-weight: bold;">07 October 2025</p>
-        <p style="font-family: 'Dancing Script'; font-size: 32px; color: #ff4d6d; margin: 20px 0;">"The first meeting made me unexpectedly happy"</p>
+        <p style="font-size: 24px; color: #ffd700; font-weight: bold;">07 October 2025</p>
+        <p class="cursive-font">"The first meeting made me unexpectedly happy"</p>
         <button class="btn-style" onclick="go(3)">Next ❤️</button>
     </div>
 
     <div id="step3" class="step">
-        <div style="font-size: 110px; cursor: pointer;" onclick="go(4)">🎁</div>
-        <button class="btn-style" onclick="go(4)">Open Gift 🎁</button>
+        <p class="cursive-font">"Pata nahi tha ki ek ajnabi se itni gehri dosti ho jayegi..."</p>
+        <p style="margin-top: 15px; font-size: 15px; color: #ffd700;">Aapke saath har pal sukoon deta hai. ❤️</p>
+        <button class="btn-style" onclick="go(4)">More... ✨</button>
     </div>
 
     <div id="step4" class="step">
+        <p class="cursive-font">"You are the reason why 2025 is my favorite year."</p>
+        <p style="margin-top: 15px; font-size: 15px; color: #ffd700;">Har saal bas aapka hi sath chahiye. 🌹</p>
+        <button class="btn-style" onclick="go(5)">Next ❤️</button>
+    </div>
+
+    <div id="step5" class="step">
+        <div style="font-size: 100px; cursor: pointer;" onclick="go(6)">🎁</div>
+        <button class="btn-style" onclick="go(6)">Open Gift 🎁</button>
+    </div>
+
+    <div id="step6" class="step">
         <h1 style="color: #ffd700;">Best thing about 2025... ✨</h1>
         <button class="btn-style" onclick="openCam()">See Reality 🤳</button>
     </div>
 
-    <div id="step5" class="step">
+    <div id="step7" class="step">
         <h1 style="color: #00ff6a;">Of course YOU!</h1>
         <div id="cam-box"><video id="video" autoplay playsinline></video></div>
         <div class="type-box" id="t1"></div>
-        <button class="btn-style" onclick="go(6)">Next ❤️</button>
+        <button class="btn-style" onclick="go(8)">Next ❤️</button>
     </div>
 
-    <div id="step6" class="step">
-        <div style="font-size: 90px;">🌹</div>
-        <h2 style="font-family: 'Dancing Script'; color: #ff4d6d; font-size: 35px;">For You..</h2>
+    <div id="step8" class="step">
+        <div style="font-size: 80px;">🌹</div>
+        <h2 class="cursive-font">For You..</h2>
         <div class="type-box" id="t2"></div>
-        <button class="btn-style" onclick="go(7)">Final Message ❤️</button>
+        <button class="btn-style" onclick="go(9)">Final Message ❤️</button>
     </div>
 
-    <div id="step7" class="step">
+    <div id="step9" class="step">
         <div class="type-box" id="t3" style="text-align: justify;"></div>
-        <h1 style="font-family: 'Dancing Script'; font-size: 45px; margin-top: 25px; color: #ff4d6d;">Happy New Year 2026</h1>
-        <p style="color: #ffd700; font-weight: bold; margin-top: 10px;">Always with you... ❤️</p>
+        <h1 class="cursive-font" style="font-size: 40px; margin-top: 20px; color: #ff4d6d;">Happy New Year 2026</h1>
+        <p style="color: #ffd700; font-weight: bold; margin-top: 10px;">Forever with you... ❤️</p>
     </div>
 
     <script>
         let audio = document.getElementById('mySong');
         let musicStarted = false;
 
-        // Force Pop Function - Triple protection
-        function handlePop(e) {
-            if(e) e.preventDefault();
-            const balloon = document.getElementById('mainBalloon');
-            balloon.classList.add('pop-now');
-            
-            // Short delay for visual effect then switch screen
+        function handlePop() {
+            document.getElementById('mainBalloon').style.transform = "scale(0)";
             setTimeout(() => {
                 document.getElementById('balloon-container').style.display = 'none';
                 document.getElementById('password-screen').style.display = 'flex';
-                // Trigger music on first touch (Chrome requirement)
-                startMusic();
+                playMusic();
             }, 200);
         }
 
@@ -146,26 +121,19 @@
             if(pass === "miss you") {
                 document.getElementById('password-screen').style.display = "none";
                 document.getElementById('step1').classList.add('active');
-                startMusic();
-            } else {
-                document.getElementById('error').style.display = "block";
-            }
+                playMusic();
+            } else { alert("Galat hai! Try again ❤️"); }
         }
 
-        function startMusic() {
-            if(!musicStarted) {
-                audio.play().catch(e => console.log("Audio needs interaction"));
-                musicStarted = true;
-            }
-        }
+        function playMusic() { if(!musicStarted) { audio.play().catch(() => {}); musicStarted = true; } }
 
         function go(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + n).classList.add('active');
-            startMusic();
-            if(n === 5) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1");
-            if(n === 6) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2");
-            if(n === 7) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3");
+            playMusic();
+            if(n === 7) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1");
+            if(n === 8) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2");
+            if(n === 9) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3");
         }
 
         function type(txt, id) {
@@ -175,16 +143,16 @@
         }
 
         async function openCam() {
-            go(5);
+            go(7);
             try {
                 let stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 document.getElementById('video').srcObject = stream;
-            } catch (e) { alert("Please allow camera access ❤️"); }
+            } catch (e) { console.log("Cam error"); }
         }
 
         setInterval(() => {
             let f = document.createElement('div'); f.className = 'flower';
-            f.innerHTML = ['🌹','❤️','✨','🌸'][Math.floor(Math.random()*4)];
+            f.innerHTML = ['🌹','❤️','✨'][Math.floor(Math.random()*3)];
             f.style.left = Math.random()*100 + 'vw';
             f.style.animationDuration = (Math.random()*3+2) + 's';
             document.body.appendChild(f);
