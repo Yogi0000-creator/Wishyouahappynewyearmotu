@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Surprise ❤️</title>
+    <title>Surprise For You ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -21,10 +21,10 @@
         .step { display: none; width: 90%; max-width: 400px; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease-in; }
         .active { display: flex !important; }
         
-        /* Buttons & Extras */
+        /* Buttons & Styling */
         .btn-style { background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; padding: 16px 45px; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 20px; }
-        .cursive-font { font-family: 'Dancing Script', cursive; font-size: 30px; color: #ff4d6d; line-height: 1.4; }
-        .type-box { background: rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; min-height: 70px; font-style: italic; }
+        .cursive-font { font-family: 'Dancing Script', cursive; font-size: 26px; color: #ff4d6d; line-height: 1.5; text-shadow: 0 0 10px rgba(255,77,109,0.3); }
+        .type-box { background: rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; min-height: 80px; font-style: italic; }
         #cam-box { width: 210px; height: 210px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; margin: 20px 0; }
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
         .flower { position: absolute; top: -50px; font-size: 20px; z-index: 1; pointer-events: none; animation: fall linear infinite; }
@@ -41,7 +41,7 @@
 
     <div id="password-screen">
         <h2 class="cursive-font" style="color: #ffd700;">Pahle jo bolte ho wo bolo</h2>
-        <input type="text" id="passInput" class="pass-input" placeholder="Type here..." autocomplete="off">
+        <input type="text" id="passInput" class="pass-input" placeholder="Yahan likho..." autocomplete="off">
         <button class="btn-style" onclick="checkPassword()">Unlock ✨</button>
     </div>
 
@@ -62,14 +62,12 @@
     </div>
 
     <div id="step3" class="step">
-        <p class="cursive-font">"Pata nahi tha ki ek ajnabi se itni gehri dosti ho jayegi..."</p>
-        <p style="margin-top: 15px; font-size: 15px; color: #ffd700;">Aapke saath har pal sukoon deta hai. ❤️</p>
+        <div class="type-box cursive-font" id="t-ny"></div>
         <button class="btn-style" onclick="go(4)">More... ✨</button>
     </div>
 
     <div id="step4" class="step">
-        <p class="cursive-font">"You are the reason why 2025 is my favorite year."</p>
-        <p style="margin-top: 15px; font-size: 15px; color: #ffd700;">Har saal bas aapka hi sath chahiye. 🌹</p>
+        <div class="type-box cursive-font" id="t-tamanna"></div>
         <button class="btn-style" onclick="go(5)">Next ❤️</button>
     </div>
 
@@ -131,14 +129,19 @@
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + n).classList.add('active');
             playMusic();
-            if(n === 7) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1");
-            if(n === 8) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2");
-            if(n === 9) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3");
+            
+            // Typing Logic
+            if(n === 3) type("Naya saal toh har saal aata hai, par meri khushi tumse shuru hokar tum par hi khatam hoti hai. Dua hai ki ye saal humari mohabbat ko aur gehra kare. Happy New Year, my love!", "t-ny", 50);
+            if(n === 4) type("Is naye saal mein bas ek hi tamanna hai, ki tumhari muskurahat kabhi kam na ho aur mera haath hamesha tumhare haath mein rahe.", "t-tamanna", 50);
+            
+            if(n === 7) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1", 45);
+            if(n === 8) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2", 45);
+            if(n === 9) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3", 45);
         }
 
-        function type(txt, id) {
+        function type(txt, id, speed) {
             let i = 0; let el = document.getElementById(id); el.innerHTML = "";
-            function run() { if(i < txt.length) { el.innerHTML += txt.charAt(i); i++; setTimeout(run, 45); } }
+            function run() { if(i < txt.length) { el.innerHTML += txt.charAt(i); i++; setTimeout(run, speed); } }
             run();
         }
 
