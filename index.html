@@ -9,30 +9,35 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; }
 
-        /* Balloon Section */
+        /* Scratch Card Styling */
+        #scratch-container { position: relative; width: 280px; height: 150px; background: #fff; border-radius: 15px; overflow: hidden; margin: 20px auto; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        #scratch-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; z-index: 2; touch-action: none; }
+        .scratch-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: #ff4d6d; color: white; font-family: 'Dancing Script'; font-size: 20px; padding: 20px; z-index: 1; line-height: 1.4; }
+
+        /* Floating Hearts on Tap */
+        .tap-heart { position: absolute; pointer-events: none; animation: flyUp 1s linear forwards; font-size: 24px; z-index: 100000; }
+        @keyframes flyUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-120px) scale(1.5); opacity: 0; } }
+
+        /* General Styles */
         #balloon-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a0011; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; }
         .balloon { width: 120px; height: 150px; background: #ff4d6d; border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%; position: relative; box-shadow: inset -10px -10px 15px rgba(0,0,0,0.3), 0 10px 30px rgba(255,77,109,0.5); animation: float 2s ease-in-out infinite; }
         .balloon::before { content: "📍"; position: absolute; top: -20px; right: -5px; font-size: 35px; }
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-30px) rotate(2deg); } }
-
-        /* Password & Steps */
         #password-screen { display: none; flex-direction: column; align-items: center; z-index: 10000; }
         .pass-input { padding: 15px; width: 280px; border-radius: 12px; border: 2px solid #ffd700; background: rgba(255,255,255,0.1); color: white; font-size: 18px; text-align: center; margin: 20px 0; }
         .step { display: none; width: 90%; max-width: 400px; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease-in; }
         .active { display: flex !important; }
-        
-        /* Buttons & Styling */
-        .btn-style { background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; padding: 16px 45px; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 20px; }
-        .cursive-font { font-family: 'Dancing Script', cursive; font-size: 26px; color: #ff4d6d; line-height: 1.5; text-shadow: 0 0 10px rgba(255,77,109,0.3); }
+        .btn-style { background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; padding: 15px 40px; border: none; border-radius: 50px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 15px; }
+        .cursive-font { font-family: 'Dancing Script', cursive; font-size: 26px; color: #ff4d6d; line-height: 1.5; }
         .type-box { background: rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; min-height: 80px; font-style: italic; }
-        #cam-box { width: 210px; height: 210px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; margin: 20px 0; }
+        #cam-box { width: 200px; height: 200px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; margin: 15px 0; }
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
         .flower { position: absolute; top: -50px; font-size: 20px; z-index: 1; pointer-events: none; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body>
+<body onmousedown="createHeart(event)" ontouchstart="createHeart(event)">
 
     <div id="balloon-container" onclick="handlePop()">
         <h2 style="margin-bottom: 50px; color: #ffd700; font-family: 'Dancing Script'; font-size: 32px;">Pin the balloon! 🎈</h2>
@@ -50,7 +55,7 @@
     </audio>
 
     <div id="step1" class="step">
-        <h1 style="font-size: 70px; color: #ffd700;">2025</h1>
+        <h1 style="font-size: 60px; color: #ffd700;">2025</h1>
         <p style="font-size: 16px; line-height: 1.6; color: #ffe0ed;">"This year has been the most special year of my life because I found you in 2025..."</p>
         <button class="btn-style" onclick="go(2)">Next ✨</button>
     </div>
@@ -72,42 +77,52 @@
     </div>
 
     <div id="step5" class="step">
-        <div style="font-size: 100px; cursor: pointer;" onclick="go(6)">🎁</div>
+        <p class="cursive-font">Scratch this to see my Promise... 🤫</p>
+        <div id="scratch-container">
+            <div class="scratch-content">I promise I will never hurt your heart intentionally. ❤️</div>
+            <canvas id="scratch-canvas" width="280" height="150"></canvas>
+        </div>
         <button class="btn-style" onclick="go(6)">Open Gift 🎁</button>
     </div>
 
     <div id="step6" class="step">
+        <div style="font-size: 90px; cursor: pointer;" onclick="go(7)">🎁</div>
+        <p>A gift for you...</p>
+        <button class="btn-style" onclick="go(7)">Open Gift 🎁</button>
+    </div>
+
+    <div id="step7" class="step">
         <h1 style="color: #ffd700;">Best thing about 2025... ✨</h1>
         <button class="btn-style" onclick="openCam()">See Reality 🤳</button>
     </div>
 
-    <div id="step7" class="step">
+    <div id="step8" class="step">
         <h1 style="color: #00ff6a;">Of course YOU!</h1>
         <div id="cam-box"><video id="video" autoplay playsinline></video></div>
         <div class="type-box" id="t1"></div>
-        <button class="btn-style" onclick="go(8)">Next ❤️</button>
-    </div>
-
-    <div id="step8" class="step">
-        <div style="font-size: 80px;">🌹</div>
-        <h2 class="cursive-font">For You..</h2>
-        <div class="type-box" id="t2"></div>
-        <button class="btn-style" onclick="go(9)">Final Message ❤️</button>
+        <button class="btn-style" onclick="go(9)">Next ❤️</button>
     </div>
 
     <div id="step9" class="step">
-        <div class="type-box" id="t3" style="text-align: justify;"></div>
-        <h1 class="cursive-font" style="font-size: 40px; margin-top: 20px; color: #ff4d6d;">Happy New Year 2026</h1>
-        <button class="btn-style" onclick="go(10)">One More Thing... ✨</button>
+        <div style="font-size: 70px;">🌹</div>
+        <h2 class="cursive-font">For You..</h2>
+        <div class="type-box" id="t2"></div>
+        <button class="btn-style" onclick="go(10)">Final Message ❤️</button>
     </div>
 
     <div id="step10" class="step">
-        <div class="type-box cursive-font" id="t-mila"></div>
-        <button class="btn-style" onclick="go(11)">Last Message ❤️</button>
+        <div class="type-box" id="t3" style="text-align: justify;"></div>
+        <h1 class="cursive-font" style="font-size: 35px; margin-top: 15px; color: #ff4d6d;">Happy New Year 2026</h1>
+        <button class="btn-style" onclick="go(11)">One More Thing... ✨</button>
     </div>
 
     <div id="step11" class="step">
-        <div style="font-size: 100px; margin-bottom: 20px;">💑</div>
+        <div class="type-box cursive-font" id="t-mila"></div>
+        <button class="btn-style" onclick="go(12)">Last Message ❤️</button>
+    </div>
+
+    <div id="step12" class="step">
+        <div style="font-size: 90px; margin-bottom: 10px;">💑</div>
         <div class="type-box cursive-font" id="t-final"></div>
         <p style="color: #ffd700; font-weight: bold; margin-top: 20px; letter-spacing: 2px;">FOREVER & ALWAYS</p>
     </div>
@@ -115,6 +130,39 @@
     <script>
         let audio = document.getElementById('mySong');
         let musicStarted = false;
+
+        function createHeart(e) {
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            if(!clientX) return;
+            const heart = document.createElement('div');
+            heart.className = 'tap-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = clientX + 'px';
+            heart.style.top = clientY + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1000);
+        }
+
+        function initScratch() {
+            const canvas = document.getElementById('scratch-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#C0C0C0'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'destination-out';
+            
+            function scratch(e) {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+                const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+                ctx.beginPath();
+                ctx.arc(x, y, 25, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('touchmove', scratch);
+        }
 
         function handlePop() {
             document.getElementById('mainBalloon').style.transform = "scale(0)";
@@ -139,19 +187,16 @@
         function go(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + n).classList.add('active');
+            if(n === 5) initScratch();
             playMusic();
             
             if(n === 3) type("Naya saal toh har saal aata hai, par meri khushi tumse shuru hokar tum par hi khatam hoti hai. Dua hai ki ye saal humari mohabbat ko aur gehra kare. Happy New Year, my love!", "t-ny", 50);
             if(n === 4) type("Is naye saal mein bas ek hi tamanna hai, ki tumhari muskurahat kabhi kam na ho aur mera haath hamesha tumhare haath mein rahe.", "t-tamanna", 50);
-            if(n === 7) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1", 45);
-            if(n === 8) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2", 45);
-            if(n === 9) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3", 45);
-            
-            // New Page 10 Typing
-            if(n === 10) type("Tum mile toh sab mila, naye saal se ab aur kya maangu?", "t-mila", 55);
-            
-            // Final Page 11 Typing
-            if(n === 11) type("Naya saal, naye sapne, aur wahi mera purana wala saccha pyaar. I love you!", "t-final", 60);
+            if(n === 8) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1", 45);
+            if(n === 9) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2", 45);
+            if(n === 10) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3", 45);
+            if(n === 11) type("Tum mile toh sab mila, naye saal se ab aur kya maangu?", "t-mila", 55);
+            if(n === 12) type("Naya saal, naye sapne, aur wahi mera purana wala saccha pyaar. I love you!", "t-final", 60);
         }
 
         function type(txt, id, speed) {
@@ -161,7 +206,7 @@
         }
 
         async function openCam() {
-            go(7);
+            go(8);
             try {
                 let stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 document.getElementById('video').srcObject = stream;
