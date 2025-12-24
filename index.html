@@ -3,76 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For You ❤️</title>
+    <title>Top Secret ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
-        
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; }
         
-        body { 
-            background: #1a0011; /* Dark romantic background */
-            background: radial-gradient(circle, #2b001e, #000); 
-            height: 100vh; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-family: 'Poppins', sans-serif; 
-            color: white; 
-            overflow: hidden; 
-            text-align: center; 
-        }
+        /* Password Screen Styling */
+        #password-screen { position: fixed; top:0; left:0; width:100%; height:100%; background:#1a0011; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .pass-input { padding: 15px; width: 80%; max-width: 300px; border-radius: 10px; border: 2px solid #ffd700; background: rgba(255,255,255,0.1); color: white; font-size: 18px; text-align: center; outline: none; margin: 20px 0; }
+        .error-msg { color: #ff4d6d; font-size: 14px; display: none; margin-bottom: 10px; }
 
-        /* Flowers Falling */
         .flower { position: absolute; top: -50px; font-size: 20px; z-index: 1; pointer-events: none; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-
-        /* Steps System */
         .step { display: none; width: 90%; max-width: 400px; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease-in; }
         .active { display: flex !important; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Styling for Texts */
-        .year-title { font-size: 60px; color: #ffd700; margin-bottom: 15px; text-shadow: 0 0 10px #ff8c00; }
+        .year-title { font-size: 60px; color: #ffd700; margin-bottom: 15px; }
         .msg-text { font-size: 16px; line-height: 1.6; color: #ffe0ed; margin-bottom: 25px; }
-        .date-title { font-size: 24px; color: #ffd700; font-weight: bold; }
-        .cursive-font { font-family: 'Dancing Script', cursive; font-size: 30px; color: #ff4d6d; }
-
-        /* Buttons */
-        .btn-style { 
-            background: linear-gradient(45deg, #ffd700, #ff8c00); 
-            color: #000; padding: 15px 40px; border: none; border-radius: 50px; 
-            font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 5px 15px rgba(255,215,0,0.3);
-            margin-top: 20px;
-        }
-
-        /* Camera Box */
+        .btn-style { background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; padding: 15px 40px; border: none; border-radius: 50px; font-weight: bold; font-size: 18px; cursor: pointer; box-shadow: 0 5px 15px rgba(255,215,0,0.3); margin-top: 20px; }
         #cam-box { width: 220px; height: 220px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; margin: 20px 0; box-shadow: 0 0 20px #ff4d6d; }
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-
-        .type-box { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; min-height: 60px; }
+        .type-box { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; min-height: 60px; font-style: italic; }
     </style>
 </head>
 <body onclick="startMusic()">
 
-    <audio id="mySong" loop>
+    <div id="password-screen">
+        <h2 style="color: #ffd700; font-family: 'Dancing Script'; font-size: 30px;">Pahle jo bolte ho wo bolo</h2>
+        <input type="text" id="passInput" class="pass-input" placeholder="Type here..." autocomplete="off">
+        <p id="error" class="error-msg">Galat hai! Kuch aur yaad karo ❤️</p>
+        <button class="btn-style" onclick="checkPassword()">Unlock ✨</button>
+    </div>
+
+    <audio id="mySong" loop preload="auto">
         <source src="https://www.dropbox.com/scl/fi/6uqh9i9df9lffrkl1tg25/instrumental-Flute-Version-Tujh-Mein-Rab-Dikhta-Hai-Rab-Ne-Bana-Di-Jodi-Aykronix-Release.mp3?rlkey=v6gd5ggdm3v9gxarlcmnvvufz&st=07d36vjf&raw=1" type="audio/mpeg">
     </audio>
 
-    <div id="step1" class="step active">
+    <div id="step1" class="step">
         <h1 class="year-title">2025</h1>
         <p class="msg-text">"This year has been the most special year of my life because I found you in 2025. And I want you to always be with me and spend the rest of my life with you."</p>
-        <button class="btn-style" onclick="go(2)">Start Journey ✨</button>
+        <button class="btn-style" onclick="go(2)">Next Step ✨</button>
     </div>
 
     <div id="step2" class="step">
-        <p class="date-title">07 October 2025</p>
-        <p class="cursive-font">"The first meeting made me unexpectedly happy"</p>
+        <p style="font-size: 24px; color: #ffd700; font-weight: bold;">07 October 2025</p>
+        <p style="font-family: 'Dancing Script'; font-size: 30px; color: #ff4d6d;">"The first meeting made me unexpectedly happy"</p>
         <button class="btn-style" onclick="go(3)">Next ❤️</button>
     </div>
 
     <div id="step3" class="step">
         <div style="font-size: 100px; cursor: pointer;" onclick="go(4)">🎁</div>
-        <p>A gift for you...</p>
         <button class="btn-style" onclick="go(4)">Open Gift 🎁</button>
     </div>
 
@@ -90,14 +71,14 @@
 
     <div id="step6" class="step">
         <div style="font-size: 80px;">🌹</div>
-        <h2 class="cursive-font">For You..</h2>
+        <h2 style="font-family: 'Dancing Script'; color: #ff4d6d; font-size: 30px;">For You..</h2>
         <div class="type-box" id="t2"></div>
         <button class="btn-style" onclick="go(7)">Final Message ❤️</button>
     </div>
 
     <div id="step7" class="step">
         <div class="type-box" id="t3" style="text-align: justify;"></div>
-        <h1 class="cursive-font" style="font-size: 40px; margin-top: 20px;">Happy New Year 2026</h1>
+        <h1 style="font-family: 'Dancing Script'; font-size: 40px; margin-top: 20px; color: #ff4d6d;">Happy New Year 2026</h1>
         <p style="color: #ffd700;">Always with you... ❤️</p>
     </div>
 
@@ -105,28 +86,22 @@
         let audio = document.getElementById('mySong');
         let audioStarted = false;
 
+        function checkPassword() {
+            let pass = document.getElementById('passInput').value.toLowerCase().trim();
+            if(pass === "miss you") {
+                document.getElementById('password-screen').style.display = "none";
+                document.getElementById('step1').classList.add('active');
+                startMusic();
+            } else {
+                document.getElementById('error').style.display = "block";
+            }
+        }
+
         function startMusic() {
             if(!audioStarted) {
                 audio.play().catch(e => console.log("Music needs tap"));
                 audioStarted = true;
             }
-        }
-
-        function createFlower() {
-            let f = document.createElement('div');
-            f.className = 'flower';
-            f.innerHTML = ['🌹','❤️','✨'][Math.floor(Math.random()*3)];
-            f.style.left = Math.random()*100 + 'vw';
-            f.style.animationDuration = (Math.random()*3+2) + 's';
-            document.body.appendChild(f);
-            setTimeout(() => f.remove(), 5000);
-        }
-        setInterval(createFlower, 500);
-
-        function type(txt, id) {
-            let i = 0; let el = document.getElementById(id); el.innerHTML = "";
-            function run() { if(i < txt.length) { el.innerHTML += txt.charAt(i); i++; setTimeout(run, 50); } }
-            run();
         }
 
         function go(n) {
@@ -138,6 +113,12 @@
             if(n === 7) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3");
         }
 
+        function type(txt, id) {
+            let i = 0; let el = document.getElementById(id); el.innerHTML = "";
+            function run() { if(i < txt.length) { el.innerHTML += txt.charAt(i); i++; setTimeout(run, 50); } }
+            run();
+        }
+
         async function openCam() {
             go(5);
             try {
@@ -145,7 +126,16 @@
                 document.getElementById('video').srcObject = stream;
             } catch (e) { console.log("Cam error"); }
         }
+
+        setInterval(function createFlower() {
+            let f = document.createElement('div');
+            f.className = 'flower';
+            f.innerHTML = ['🌹','❤️','✨'][Math.floor(Math.random()*3)];
+            f.style.left = Math.random()*100 + 'vw';
+            f.style.animationDuration = (Math.random()*3+2) + 's';
+            document.body.appendChild(f);
+            setTimeout(() => f.remove(), 5000);
+        }, 500);
     </script>
 </body>
-    </html>
-    
+</html>
