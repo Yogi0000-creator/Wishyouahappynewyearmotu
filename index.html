@@ -7,14 +7,17 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; }
+        body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; transition: background 2s ease; }
         
         #scratch-container { position: relative; width: 280px; height: 150px; background: #fff; border-radius: 15px; overflow: hidden; margin: 20px auto; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
         #scratch-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; z-index: 2; touch-action: none; }
         .scratch-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: #ff4d6d; color: white; font-family: 'Dancing Script'; font-size: 20px; padding: 20px; z-index: 1; }
 
+        #meter-container { width: 100%; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; display: none; overflow: hidden; border: 1px solid #ff4d6d; }
+        #meter-fill { width: 0%; height: 100%; background: linear-gradient(to right, #ff4d6d, #ffd700); transition: width 2s ease-in-out; }
+
         #balloon-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a0011; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; }
-        .balloon { width: 120px; height: 150px; background: #ff4d6d; border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%; position: relative; box-shadow: inset -10px -10px 15px rgba(0,0,0,0.3), 0 10px 30px rgba(255,77,109,0.5); animation: float 2s ease-in-out infinite; }
+        .balloon { width: 120px; height: 150px; background: #ff4d6d; border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%; position: relative; box-shadow: 0 10px 30px rgba(255,77,109,0.5); animation: float 2s ease-in-out infinite; }
         .balloon::before { content: "📍"; position: absolute; top: -20px; right: -5px; font-size: 35px; }
         @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-30px) rotate(2deg); } }
 
@@ -32,7 +35,7 @@
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body>
+<body onmousedown="createHeart(event)" ontouchstart="createHeart(event)">
 
     <div id="balloon-container" onclick="handlePop()">
         <h2 style="margin-bottom: 50px; color: #ffd700; font-family: 'Dancing Script'; font-size: 32px;">Pin the balloon! 🎈</h2>
@@ -65,16 +68,47 @@
         <button id="scratch-btn" class="btn-style" style="display:none;" onclick="go(6)">Dekho kya hai? 🎁</button>
     </div>
 
-    <div id="step6" class="step"><div style="font-size: 80px;">🎁</div><button class="btn-style" onclick="openCam()">Open</button></div>
-    <div id="step7" class="step"><div id="cam-box"><video id="video" autoplay playsinline></video></div><div class="type-box" id="t1"></div><button class="btn-style" onclick="go(8)">Next ❤️</button></div>
+    <div id="step6" class="step">
+        <h1 style="color: #ffd700; font-family: 'Dancing Script'; font-size: 35px;">Best thing about 2025... ✨</h1>
+        <button class="btn-style" onclick="openCam()">See Reality 🤳</button>
+    </div>
+
+    <div id="step7" class="step">
+        <h1 style="color: #00ff6a;">Of course YOU!</h1>
+        <div id="cam-box"><video id="video" autoplay playsinline></video></div>
+        <div class="type-box" id="t1"></div>
+        <button class="btn-style" onclick="go(8)">Next ❤️</button>
+    </div>
+
     <div id="step8" class="step"><div class="type-box" id="t2"></div><button class="btn-style" onclick="go(9)">Final ❤️</button></div>
     <div id="step9" class="step"><div class="type-box" id="t3"></div><h1 class="cursive-font" style="font-size: 35px; color: #ff4d6d; margin-top: 15px;">Happy New Year 2026</h1><button class="btn-style" onclick="go(10)">One More ✨</button></div>
-    <div id="step10" class="step"><div class="type-box cursive-font" id="t-mila"></div><button class="btn-style" onclick="go(11)">Last Message ❤️</button></div>
-    <div id="step11" class="step"><div style="font-size: 80px;">💑</div><div class="type-box cursive-font" id="t-final"></div><p style="color: #ffd700; font-weight: bold; margin-top: 20px;">FOREVER & ALWAYS</p></div>
+    <div id="step10" class="step"><div class="type-box cursive-font" id="t-mila"></div><button class="btn-style" onclick="go(11)">Last Thing ❤️</button></div>
+
+    <div id="step11" class="step">
+        <p class="cursive-font">How much I love you?</p>
+        <div id="meter-container"><div id="meter-fill"></div></div>
+        <p id="percent" style="font-weight:bold; color:#ffd700; font-size:24px;">0%</p>
+        <div class="type-box cursive-font" id="t-final" style="margin-top:15px; display:none;"></div>
+        <button id="final-btn" class="btn-style" onclick="startLoveMeter()">Check Now 💖</button>
+        <p id="forever-text" style="color: #ffd700; font-weight: bold; margin-top: 20px; display:none; letter-spacing: 2px;">FOREVER & ALWAYS 💑</p>
+    </div>
 
     <script>
         let audio = document.getElementById('mySong');
         let musicStarted = false;
+
+        function createHeart(e) {
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            if(!clientX) return;
+            const heart = document.createElement('div');
+            heart.className = 'tap-heart'; heart.innerHTML = '❤️';
+            heart.style.left = clientX + 'px'; heart.style.top = clientY + 'px';
+            heart.style.position = 'absolute'; heart.style.pointerEvents = 'none';
+            heart.style.animation = 'flyUp 1s linear forwards';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1000);
+        }
 
         function handlePop() {
             document.getElementById('mainBalloon').style.transform = "scale(0)";
@@ -92,6 +126,27 @@
             } else { alert("Pahle jo bolte ho wo bolo! ❤️"); }
         }
 
+        function startLoveMeter() {
+            document.getElementById('final-btn').style.display = 'none';
+            document.getElementById('meter-container').style.display = 'block';
+            let fill = document.getElementById('meter-fill');
+            let perc = document.getElementById('percent');
+            let count = 0;
+            let interval = setInterval(() => {
+                count += 1;
+                fill.style.width = count + '%';
+                perc.innerHTML = count + '%';
+                if(count >= 100) {
+                    clearInterval(interval);
+                    perc.innerHTML = "Infinite ∞";
+                    document.getElementById('t-final').style.display = 'block';
+                    document.getElementById('forever-text').style.display = 'block';
+                    type("Naya saal, naye sapne, aur wahi mera purana wala saccha pyaar. I love you!", "t-final", 60);
+                    document.body.style.background = "radial-gradient(circle, #800000, #000)";
+                }
+            }, 30);
+        }
+
         function go(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + n).classList.add('active');
@@ -103,7 +158,6 @@
             if(n === 8) type("Love you so much motu. Love you khdusain. Love you love you beta ji love you soooooooo much. ❤️", "t2", 45);
             if(n === 9) type("Thanks for coming in my life and Thank you for giving me a place in your life. You are the most beautiful part of my life. I always want to be with you.", "t3", 45);
             if(n === 10) type("Tum mile toh sab mila, naye saal se ab aur kya maangu?", "t-mila", 55);
-            if(n === 11) type("Naya saal, naye sapne, aur wahi mera purana wala saccha pyaar. I love you!", "t-final", 60);
         }
 
         function initScratch() {
@@ -149,5 +203,9 @@
             setTimeout(() => f.remove(), 5000);
         }, 500);
     </script>
+    <style>
+        @keyframes flyUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-150px) scale(2); opacity: 0; } }
+    </style>
 </body>
-</html>
+            </html>
+            
