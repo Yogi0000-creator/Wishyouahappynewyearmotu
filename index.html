@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Khdusain ❤️</title>
+    <title>Surprise For You ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
         body { background: radial-gradient(circle, #2b001e, #000); height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Poppins', sans-serif; color: white; overflow: hidden; text-align: center; transition: background 2s ease; }
         
-        /* Scratch Card */
         #scratch-container { position: relative; width: 280px; height: 150px; background: #fff; border-radius: 15px; overflow: hidden; margin: 20px auto; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
         #scratch-canvas { position: absolute; top: 0; left: 0; cursor: crosshair; z-index: 2; touch-action: none; }
         .scratch-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: #ff4d6d; color: white; font-family: 'Dancing Script'; font-size: 18px; padding: 15px; z-index: 1; }
 
-        /* Virtual Hug Button */
-        .hug-btn { width: 120px; height: 120px; background: #ff4d6d; border-radius: 50%; border: none; font-size: 50px; cursor: pointer; box-shadow: 0 0 20px #ff4d6d; animation: heartbeat 1.2s infinite; display: flex; justify-content: center; align-items: center; margin: 20px auto; }
-        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        #meter-container { width: 100%; height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; margin: 15px 0; display: none; overflow: hidden; border: 1px solid #ff4d6d; }
+        #meter-fill { width: 0%; height: 100%; background: linear-gradient(to right, #ff4d6d, #ffd700); transition: width 2s ease-in-out; }
 
-        /* General Styles */
+        #balloon-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1a0011; z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; }
+        .balloon { width: 110px; height: 140px; background: #ff4d6d; border-radius: 50% 50% 50% 50% / 45% 45% 55% 55%; position: relative; box-shadow: 0 10px 30px rgba(255,77,109,0.5); animation: float 2s ease-in-out infinite; }
+        .balloon::before { content: "📍"; position: absolute; top: -20px; right: -5px; font-size: 35px; }
+        @keyframes float { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-20px) rotate(2deg); } }
+
+        #password-screen { display: none; flex-direction: column; align-items: center; z-index: 10000; }
+        .pass-input { padding: 15px; width: 280px; border-radius: 12px; border: 2px solid #ffd700; background: rgba(255,255,255,0.1); color: white; font-size: 18px; text-align: center; margin: 20px 0; }
         .step { display: none; width: 90%; max-width: 400px; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease-in; }
         .active { display: flex !important; }
         .btn-style { background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; padding: 15px 40px; border: none; border-radius: 50px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 15px; }
@@ -27,25 +31,28 @@
         #cam-box { width: 190px; height: 190px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; margin: 10px 0; }
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
 
-        .wish-text { font-family: 'Dancing Script', cursive; font-size: 35px; color: #fff; text-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff4d6d; animation: pulse 1.5s infinite; }
+        /* Final Wishing Animation */
+        .wish-text { font-family: 'Dancing Script', cursive; font-size: 35px; color: #fff; text-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff4d6d, 0 0 40px #ff4d6d; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
-        
+
         .flower { position: absolute; top: -50px; font-size: 20px; z-index: 1; pointer-events: none; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .arrow { font-size: 30px; animation: bounce 1s infinite; color: #ffd700; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
     </style>
 </head>
 <body onmousedown="createHeart(event)" ontouchstart="createHeart(event)">
 
-    <div id="balloon-container" style="position:fixed; width:100%; height:100%; background:#1a0011; z-index:999; display:flex; flex-direction:column; justify-content:center; align-items:center;" onclick="this.style.display='none'; document.getElementById('pass-screen').style.display='flex';">
-        <h2 class="cursive-font" style="color:#ffd700; margin-bottom:30px;">Pin the Balloon 🎈</h2>
-        <div style="width:110px; height:140px; background:#ff4d6d; border-radius:50% 50% 50% 50% / 45% 45% 55% 55%; box-shadow: 0 10px 30px rgba(255,77,109,0.5);"></div>
+    <div id="balloon-container" onclick="handlePop()">
+        <h2 style="margin-bottom: 50px; color: #ffd700; font-family: 'Dancing Script'; font-size: 32px;">Pin the balloon! 🎈</h2>
+        <div class="balloon" id="mainBalloon"></div>
     </div>
 
-    <div id="pass-screen" class="step">
-        <h2 class="cursive-font" style="color:#ffd700;">Pahle jo bolte ho wo bolo</h2>
-        <input type="text" id="passInput" style="padding:15px; margin:20px 0; border-radius:10px; text-align:center; width:260px;" placeholder="Yahan likho...">
-        <button class="btn-style" onclick="checkPass()">Unlock ✨</button>
+    <div id="password-screen">
+        <h2 class="cursive-font" style="color: #ffd700;">Pahle jo bolte ho wo bolo</h2>
+        <input type="text" id="passInput" class="pass-input" placeholder="Yahan likho..." autocomplete="off">
+        <button class="btn-style" onclick="checkPassword()">Unlock ✨</button>
     </div>
 
     <audio id="mySong" loop preload="auto">
@@ -71,51 +78,73 @@
     <div id="step6" class="step"><h1 style="color: #ffd700; font-family: 'Dancing Script'; font-size: 35px;">Best thing about 2025... ✨</h1><button class="btn-style" onclick="openCam()">See Reality 🤳</button></div>
 
     <div id="step7" class="step">
-        <p class="cursive-font" style="color: #ffd700; font-size: 18px;">2025 ka sabse khas gift mere liye ❤️</p>
+        <p class="cursive-font" style="color: #ffd700; font-size: 20px;">2025 ka sabse khas gift mere liye ❤️</p>
+        <div class="arrow">⬇️</div>
         <div id="cam-box"><video id="video" autoplay playsinline></video></div>
         <div class="type-box" id="t1"></div>
         <button class="btn-style" onclick="go(8)">Next ❤️</button>
     </div>
 
     <div id="step8" class="step"><div class="type-box" id="t2"></div><button class="btn-style" onclick="go(9)">Final ❤️</button></div>
-    <div id="step9" class="step"><div class="type-box" id="t3"></div><h1 class="cursive-font" style="font-size: 30px; color: #ff4d6d; margin-top: 15px;">Happy New Year 2026</h1><button class="btn-style" onclick="go(10)">Check Love 💖</button></div>
+    <div id="step9" class="step"><div class="type-box" id="t3"></div><h1 class="cursive-font" style="font-size: 35px; color: #ff4d6d; margin-top: 15px;">Happy New Year 2026</h1><button class="btn-style" onclick="go(10)">Check Now 💖</button></div>
 
     <div id="step10" class="step">
         <p class="cursive-font">How much I love you?</p>
-        <div id="percent" style="font-weight:bold; color:#ffd700; font-size:30px; margin: 20px 0;">0%</div>
+        <div id="meter-container"><div id="meter-fill"></div></div>
+        <p id="percent" style="font-weight:bold; color:#ffd700; font-size:24px;">0%</p>
+        <div class="type-box cursive-font" id="t-final" style="margin-top:10px; display:none;"></div>
         <button id="final-btn" class="btn-style" onclick="startLoveMeter()">Check 💖</button>
     </div>
 
     <div id="step11" class="step">
         <div class="type-box" id="t-special" style="text-align: justify; font-size: 14px; line-height: 1.6;"></div>
-        <button class="btn-style" onclick="go(12)">Hold This ❤️</button>
+        <button class="btn-style" onclick="go(12)">Last Thing... ❤️</button>
     </div>
 
     <div id="step12" class="step">
-        <p class="cursive-font">A Virtual Hug for you... 🤗</p>
-        <p style="font-size: 12px; margin-bottom: 10px;">(Click the heart for 10 hugs!)</p>
-        <button class="hug-btn" onclick="giveHugs()">❤️</button>
-        <button id="hug-next" class="btn-style" style="display:none;" onclick="go(13)">Final Surprise ✨</button>
-    </div>
-
-    <div id="step13" class="step">
         <div class="wish-text">Wishing you a very very happy new year khdusain.</div>
-        <h1 style="font-size: 40px; color: #ffd700; margin-top: 20px; font-family: 'Dancing Script';">Happy New Year 2026</h1>
-        <p style="margin-top: 15px; color: #ff4d6d;">Always with you... ❤️</p>
+        <h1 style="font-size: 45px; color: #ffd700; margin-top: 20px; font-family: 'Dancing Script';">Happy New Year 2026</h1>
+        <p style="margin-top: 20px; letter-spacing: 2px; color: #ff4d6d;">Always with you... ❤️</p>
     </div>
 
     <script>
         let audio = document.getElementById('mySong');
         let musicStarted = false;
 
-        function checkPass() { if(document.getElementById('passInput').value.toLowerCase().trim() === "miss you") { document.getElementById('pass-screen').style.display='none'; go('A'); } else { alert("Galat hai! ❤️"); } }
+        function createHeart(e) {
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            if(!clientX) return;
+            const h = document.createElement('div'); h.className = 'tap-heart'; h.innerHTML = '❤️';
+            h.style.left = clientX + 'px'; h.style.top = clientY + 'px';
+            h.style.position = 'absolute'; h.style.pointerEvents = 'none'; h.style.animation = 'flyUp 1s linear forwards';
+            document.body.appendChild(h); setTimeout(() => h.remove(), 1000);
+        }
+
+        function handlePop() {
+            document.getElementById('mainBalloon').style.transform = "scale(0)";
+            setTimeout(() => { document.getElementById('balloon-container').style.display = 'none'; document.getElementById('password-screen').style.display = 'flex'; playMusic(); }, 200);
+        }
+
+        function checkPassword() { if(document.getElementById('passInput').value.toLowerCase().trim() === "miss you") { document.getElementById('password-screen').style.display = "none"; go('A'); } else { alert("Galat hai! ❤️"); } }
+
+        function startLoveMeter() {
+            document.getElementById('final-btn').style.display = 'none'; document.getElementById('meter-container').style.display = 'block';
+            let fill = document.getElementById('meter-fill'); let perc = document.getElementById('percent'); let count = 0;
+            let interval = setInterval(() => {
+                count += 1; fill.style.width = count + '%'; perc.innerHTML = count + '%';
+                if(count >= 100) {
+                    clearInterval(interval); perc.innerHTML = "Infinite ∞"; document.getElementById('t-final').style.display = 'block';
+                    type("Naya saal, naye sapne, aur wahi mera purana wala saccha pyaar. I love you!", "t-final", 50);
+                    setTimeout(() => { let b = document.createElement('button'); b.className = 'btn-style'; b.innerHTML = "Read My Heart ❤️"; b.onclick = () => go(11); document.getElementById('step10').appendChild(b); }, 3000);
+                }
+            }, 30);
+        }
 
         function go(n) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             document.getElementById('step' + n).classList.add('active');
-            if(n === 5) initScratch();
-            if(!musicStarted) { audio.play().catch(()=>{}); musicStarted = true; }
-            
+            if(n === 5) initScratch(); playMusic();
             if(n === 3) type("Naya saal toh har saal aata hai, par meri khushi tumse shuru hokar tum par hi khatam hoti hai. Dua hai ki ye saal humari mohabbat ko aur gehra kare. Happy New Year, my love!", "t-ny", 40);
             if(n === 4) type("Is naye saal mein bas ek hi tamanna hai, ki tumhari muskurahat kabhi kam na ho aur mera haath hamesha tumhare haath mein rahe.", "t-tamanna", 40);
             if(n === 7) type("Hmesa sath rhna motu . Me chahta hu life ka har saal tmhare sth suru ho or tum pr hi khtm .. I need you .", "t1", 40);
@@ -124,39 +153,14 @@
             if(n === 11) type("Motu hmesa sath rhna or hmesa support Krna . Or apne relation pr aanch mat aane dena beta . Me hmesa tumhare sath rahna chahta hu . Life k hr pal tmse share Krna chahta hu life ki har khusi or dukh tmhare sth baatna chahta hu hmesa mere sath rhna bas .. New year ki ek or wish hai ki kabhi mere wajah se or na kisi bajah or bajah se tmhe takleef n ho .. I always want to be yours.", "t-special", 40);
         }
 
-        function startLoveMeter() {
-            document.getElementById('final-btn').style.display = 'none';
-            let perc = document.getElementById('percent'); let count = 0;
-            let interval = setInterval(() => {
-                count += 1; perc.innerHTML = count + '%';
-                if(count >= 100) { clearInterval(interval); perc.innerHTML = "Infinite ∞"; setTimeout(()=>go(11), 1500); }
-            }, 30);
-        }
-
-        function giveHugs() {
-            for(let i=0; i<15; i++) {
-                setTimeout(() => {
-                    const h = document.createElement('div'); h.className = 'tap-heart'; h.innerHTML = '🤗';
-                    h.style.left = Math.random() * 80 + 10 + 'vw'; h.style.top = Math.random() * 80 + 10 + 'vh';
-                    document.body.appendChild(h); setTimeout(() => h.remove(), 1000);
-                }, i * 100);
-            }
-            document.getElementById('hug-next').style.display = 'block';
-        }
-
         function initScratch() {
             const canvas = document.getElementById('scratch-canvas'); const ctx = canvas.getContext('2d');
             ctx.fillStyle = '#C0C0C0'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.globalCompositeOperation = 'destination-out';
-            let sc = 0; canvas.addEventListener('touchmove', (e) => { e.preventDefault(); const r = canvas.getBoundingClientRect(); const x = e.touches[0].clientX - r.left; const y = e.touches[0].clientY - r.top; ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill(); sc++; if(sc > 40) document.getElementById('scratch-btn').style.display = 'block'; });
-        }
-
-        function createHeart(e) {
-            const h = document.createElement('div'); h.className = 'tap-heart'; h.innerHTML = '❤️';
-            h.style.left = (e.clientX || e.touches[0].clientX) + 'px'; h.style.top = (e.clientY || e.touches[0].clientY) + 'px';
-            document.body.appendChild(h); setTimeout(() => h.remove(), 1000);
+            let sc = 0; canvas.addEventListener('touchmove', (e) => { e.preventDefault(); const r = canvas.getBoundingClientRect(); const x = e.touches[0].clientX - r.left; const y = e.touches[0].clientY - r.top; ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill(); sc++; if(sc > 50) document.getElementById('scratch-btn').style.display = 'block'; });
         }
 
         function type(txt, id, spd) { let i = 0; let el = document.getElementById(id); el.innerHTML = ""; function run() { if(i < txt.length) { el.innerHTML += txt.charAt(i); i++; setTimeout(run, spd); } } run(); }
+        function playMusic() { if(!musicStarted) { audio.play().catch(() => {}); musicStarted = true; } }
         async function openCam() { go(7); try { let s = await navigator.mediaDevices.getUserMedia({ video: true }); document.getElementById('video').srcObject = s; } catch (e) { alert("Camera allow karein ❤️"); } }
 
         setInterval(() => {
@@ -165,6 +169,6 @@
             document.body.appendChild(f); setTimeout(() => f.remove(), 5000);
         }, 500);
     </script>
+    <style> @keyframes flyUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-150px) scale(2); opacity: 0; } } </style>
 </body>
-            </html>
-            
+</html>
