@@ -28,11 +28,13 @@
         .btn-style { background: linear-gradient(45deg, #ffd700, #ff8c00); color: #000; padding: 15px 40px; border: none; border-radius: 50px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 15px; }
         .cursive-font { font-family: 'Dancing Script', cursive; font-size: 26px; color: #ff4d6d; line-height: 1.5; }
         .type-box { background: rgba(255,255,255,0.1); padding: 18px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); width: 100%; min-height: 80px; font-style: italic; }
-        #cam-box { width: 200px; height: 200px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; margin: 15px 0; }
+        #cam-box { width: 200px; height: 200px; border-radius: 50%; border: 5px solid #fff; overflow: hidden; margin: 10px 0; position: relative; }
         video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
         .flower { position: absolute; top: -50px; font-size: 20px; z-index: 1; pointer-events: none; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .arrow { font-size: 30px; animation: bounce 1s infinite; margin-top: 5px; color: #ffd700; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
     </style>
 </head>
 <body onmousedown="createHeart(event)" ontouchstart="createHeart(event)">
@@ -74,9 +76,10 @@
     </div>
 
     <div id="step7" class="step">
-        <h1 style="color: #00ff6a;">Of course YOU!</h1>
+        <p class="cursive-font" style="color: #ffd700; font-size: 22px;">2025 ka sabse khas gift mere liye ❤️</p>
+        <div class="arrow">⬇️</div>
         <div id="cam-box"><video id="video" autoplay playsinline></video></div>
-        <div class="type-box" id="t1"></div>
+        <div class="type-box" id="t1" style="margin-top: 10px;"></div>
         <button class="btn-style" onclick="go(8)">Next ❤️</button>
     </div>
 
@@ -207,5 +210,4 @@
         @keyframes flyUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-150px) scale(2); opacity: 0; } }
     </style>
 </body>
-            </html>
-            
+</html>
